@@ -1,0 +1,48 @@
+Avaliação de Estruturas de Dados I - Unidade 1
+Instruções:
+
+Crie um repositório no GitHub com exemplos práticos de cada conceito abordado conforme apresentado nas questões 1 a 5.
+1) GitHub (Como criar?):
+
+Crie um novo repositório no GitHub:
+Nomeie o repositório como "EstruturasDeDados".
+Adicione uma descrição breve, como "Repositório para estudo de listas encadeadas, listas ordenadas e árvores binárias em "Python, Java ou C#".
+
+
+Questões:
+
+1. Introdução às Estruturas de Dados:
+
+Explique o que são estruturas de dados e qual a sua importância no contexto da ciência da computação.
+Forneça exemplos de problemas do mundo real que podem ser resolvidos com o uso de estruturas de dados.
+No Repositório do GitHub, crie uma pasta "Introdução" e crie um arquivo readme.md explicando o que são estruturas de dados, e adicione exemplos de casos reais onde elas podem ser aplicadas.
+2. Definição e importância das Estruturas de Dados no Desenvolvimento de Programas:
+
+Explique a diferença entre estruturas de dados lineares e não lineares, fornecendo exemplos de cada tipo.
+No Repositório do GitHub, crie uma pasta "Definição-Importância" e crie um arquivo readme.md explicando como as estruturas de dados impactam o desempenho de um programa, e um arquivo .py ou .js exemplificando como um código sem tratamento de estrutura de dados pode ser menos performático que um código com o tratamento correto.
+3. Conceitos Fundamentais: Variáveis, Tipos de Dados e Alocação de Memória:
+
+Defina os conceitos de variáveis e tipos de dados, e explique como eles estão relacionados com a alocação de memória.
+Explique a diferença entre alocação de memória estática e dinâmica, fornecendo exemplos de cada tipo.
+No Repositório do GitHub, crie uma pasta "Conceitos-Fundamentais", dentro dessa pasta crie duas pastas, "Alocação-Estática" e "Alocação-Dinâmica". Dentro de cada pasta, crie um arquivo readme.md explicando o tipo de alocação de memória da pasta, e um arquivo .py ou .js exemplificando o funcionamento da alocação de memória.
+4. Visão Geral das Estruturas Lineares: Listas, Filas e Pilhas:
+
+Defina as estruturas de dados lineares: listas, filas e pilhas.
+Para cada estrutura, descreva suas principais operações (inserção, remoção, etc.) e exemplifique.
+No Repositório do GitHub, crie uma pasta "Estruturas-Lineares", dentro dessa pasta crie 3 pastas, "Listas", "Filas", e "Pilhas". Dentro de cada pasta, crie um arquivo readme.md explicando o funcionamento da estrutura de dados da pasta, e um arquivo .py ou .js exemplificando o funcionamento da estrutura de dados.
+5. Aplicação Prática:
+
+Escolha um problema prático que possa ser resolvido com o uso de uma das estruturas de dados lineares (listas, filas ou pilhas).
+Descreva o problema e explique como a estrutura de dados escolhida pode ser usada para resolvê-lo.
+No Repositório do GitHub, na pasta raiz, crie um arquivo readme.md explicando o problema prático escolhido e um arquivo .py ou .js com a resolução do problema prático utilizando a estrutura de dados escolhida.
+Critérios de Avaliação:
+
+Criatividade do repositório no GitHub.
+Compreensão dos conceitos apresentados.  
+Qualidade e organização do repositório no GitHub.
+Capacidade de aplicar os conceitos em um problema prático.
+Recursos adicionais:
+
+Documentação do Python sobre estruturas de dados: https://docs.python.org/3/tutorial/datastructures.html
+Documentação do JavaScript sobre estruturas de dados: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures
+Artigos e tutoriais online sobre estruturas de dados.
