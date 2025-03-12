@@ -1,2 +1,2 @@
 # EstruturasDeDados
-Prova de estrutura de dados I
+Repositório para estudo de listas encadeadas, listas ordenadas e árvores binárias em "Python, Java ou C#
