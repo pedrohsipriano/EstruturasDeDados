@@ -1,4 +1,4 @@
-# Introdução às Estruturas de Dados.
+## Introdução às Estruturas de Dados.
 
 ## O que são estruturas de dados?
 
