@@ -25,5 +25,5 @@ Livros:
 
 CORMEN, Thomas H. et al. Algoritmos: Teoria e Prática. 3. ed. Rio de Janeiro: Elsevier, 2012.
 
-ALURA. Estruturas de dados: uma introdução. [S. l.], [s. d.]. Disponível em: https://www.alura.com.br/artigos/estruturas-de-dados-introducao.
+ALURA. Estruturas de dados: uma introdução. [S. l.], [s. d.]. Disponível em: https://www.alura.com.br/artigos/estruturas-de-dados-introducao. 
 
