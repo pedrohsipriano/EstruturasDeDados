@@ -1,4 +1,4 @@
-# Introdução às Estruturas de Dados
+## Introdução às Estruturas de Dados.
 
 ## O que são estruturas de dados?
 
@@ -21,4 +21,7 @@ A importância das estruturas de dados na ciência da computação é fundamenta
 * **Sistemas de busca na web:** Árvores de busca e tabelas hash são usadas para indexar e buscar páginas da web, permitindo encontrar informações relevantes de forma rápida.
 * **Repositórios de dados:** Bancos de dados utilizam diversas estruturas de dados para armazenar e organizar informações, como árvores B+ para indexação e tabelas hash para acesso rápido aos dados.
 
-##Fonte IA claude
+  #Alura(Estruturas de dados: uma introdução).
+  
+  #Algoritmos: Teoria e Prática.
+
