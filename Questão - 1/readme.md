@@ -24,7 +24,6 @@ A importância das estruturas de dados na ciência da computação é fundamenta
 Livros:
 
 CORMEN, Thomas H. et al. Algoritmos: Teoria e Prática. 3. ed. Rio de Janeiro: Elsevier, 2012.
-Recursos Online:
 
-ALURA. Estruturas de dados: uma introdução. [S. l.], [s. d.]. Disponível em: https://www.alura.com.br/artigos/estruturas-de-dados-introducao. Acesso em: 17 out. 2023.
+ALURA. Estruturas de dados: uma introdução. [S. l.], [s. d.]. Disponível em: https://www.alura.com.br/artigos/estruturas-de-dados-introducao.
 
