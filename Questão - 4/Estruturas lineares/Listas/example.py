@@ -1,4 +1,5 @@
 # Definição de operações básicas com listas em Python
+if __name__ == "__main__":
     # Criação de uma lista
     minha_lista = [1, 2, 3]  # Lista inicial: [1, 2, 3]
     print("Lista inicial:", minha_lista)
