@@ -1,10 +1,3 @@
-5. Aplicação Prática:
-
-Escolha um problema prático que possa ser resolvido com o uso de uma das estruturas de dados lineares (listas, filas ou pilhas).
-Descreva o problema e explique como a estrutura de dados escolhida pode ser usada para resolvê-lo.
-No Repositório do GitHub, na pasta raiz, crie um arquivo readme.md explicando o problema prático escolhido e um arquivo .py ou .js com a resolução do problema prático utilizando a estrutura de dados escolhida.
-
-
 # Gerenciamento de Histórico de Navegação com Pilha  
 
 Este repositório apresenta um estudo sobre como **pilhas (stacks)** podem ser utilizadas para gerenciar o histórico de navegação em navegadores web. A estrutura de **pilha** é amplamente usada para implementar a funcionalidade de "voltar" e "avançar" entre páginas visitadas.  
