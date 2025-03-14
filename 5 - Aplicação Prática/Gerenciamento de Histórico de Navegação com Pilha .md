@@ -46,24 +46,14 @@ Além do histórico de navegação, pilhas são utilizadas em outras funcionalid
    - Algumas implementações permitem alternar entre guias abertas usando pilhas.  
 
 2. **Undo/Redo em formulários e editores de texto**  
-   - O navegador pode armazenar alterações feitas pelo usuário, permitindo desfazer e refazer ações.  
-
-3. **Backtracking em formulários**  
-   - Alguns sites utilizam pilhas para armazenar estados de formulários preenchidos.  
-
-4. **Verificação de sintaxe em JavaScript e HTML**  
-   - Navegadores utilizam pilhas para validar marcações e parênteses balanceados no código das páginas web.  
+   - O navegador pode armazenar alterações feitas pelo usuário, permitindo desfazer e refazer ações.   
 
 ---
 
 ## Referências Bibliográficas  
 
-1. **Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C.** (2009). *Introduction to Algorithms* (3rd ed.). MIT Press.  
-   - Livro clássico sobre algoritmos e estruturas de dados, com explicações detalhadas sobre pilhas.  
+1. **CORMEN, T. H.; LEISERSON, C. E.; RIVEST, R. L.; STEIN, C.** _Introduction to Algorithms_. 3. ed. Cambridge: MIT Press, 2009.
 
-2. **Sedgewick, R., & Wayne, K.** (2011). *Algorithms* (4th ed.). Addison-Wesley.  
-   - Livro essencial que aborda pilhas e suas aplicações em navegação e outras áreas da computação.  
+2. **SEDGEWICK, R.; WAYNE, K.** _Algorithms_. 4. ed. Boston: Addison-Wesley, 2011. 
 
-3. **Documentação Oficial do Mozilla Developer Network (MDN)**.  
-   - Disponível em: [https://developer.mozilla.org/](https://developer.mozilla.org/)  
-   - Explica como os navegadores gerenciam histórico de navegação.  
+3. **MOZILLA DEVELOPER NETWORK (MDN).** _Documentação Oficial_. Disponível em: [https://developer.mozilla.org/](https://developer.mozilla.org/). Acesso em: 14 mar. 2025.
