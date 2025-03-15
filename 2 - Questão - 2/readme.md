@@ -1,7 +1,9 @@
-📌 Diferença entre Estruturas de Dados Lineares e Não Lineares
+# 📌 Diferença entre Estruturas de Dados Lineares e Não Lineares
+
 As estruturas de dados são formas organizadas de armazenar e manipular informações. Elas se dividem em lineares e não lineares.
 
-✅ Estruturas Lineares
+
+# ✅ Estruturas Lineares
 
 Os elementos são organizados de maneira sequencial.
 
@@ -9,8 +11,7 @@ Cada elemento tem um único sucessor e um único antecessor (exceto o primeiro e
 
 Acesso direto e previsível aos elementos.
 
-
-Exemplos:
+## Exemplos:
 
 1- Arrays (Vetores e Matrizes) → Elementos armazenados em sequência na memória. 
 
@@ -20,15 +21,15 @@ Exemplos:
 
 4- Filas (Queues) → Seguem o modelo FIFO (First In, First Out).
 
+# 🚀 Estruturas Não Lineares
 
-🚀 Estruturas Não Lineares
 
 Os elementos não seguem uma sequência única, podendo ter múltiplos relacionamentos.
 
 A organização permite acesso hierárquico ou interconectado.
 
 
-Exemplos:
+## Exemplos:
 
 1- Árvores (Trees) → Estruturas hierárquicas em que cada nó pode ter múltiplos filhos.
 
