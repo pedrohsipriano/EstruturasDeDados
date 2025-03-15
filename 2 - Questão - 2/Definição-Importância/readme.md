@@ -8,7 +8,7 @@ Suponha que precisamos buscar um elemento em uma lista. Se usarmos uma lista des
 
 No código a seguir, demonstramos a diferença entre um código sem tratamento adequado e um código otimizado.
  
-# 🔴 Código ineficiente (sem estrutura adequada)
+## 🔴 Código ineficiente (sem estrutura adequada)
 
  ```python
  # Busca ineficiente em uma lista não ordenada (O(n))
@@ -24,7 +24,7 @@ print(busca_ineficiente(70))  # Demora mais à medida que a lista cresce
 
 ```
 
-# ✅ Código otimizado usando dicionário (estrutura adequada)
+## ✅ Código otimizado usando dicionário (estrutura adequada)
 
 ```python 
 # Busca eficiente usando um dicionário (O(1))
