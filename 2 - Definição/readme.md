@@ -13,13 +13,11 @@ Acesso direto e previsível aos elementos.
 
 ## Exemplos:
 
-1. Arrays (Vetores e Matrizes) → Elementos armazenados em sequência na memória. 
+1. Listas Ligadas → Cada nó contém um ponteiro para o próximo (e, no caso da duplamente ligada, para o anterior também).
 
-2. Listas Ligadas → Cada nó contém um ponteiro para o próximo (e, no caso da duplamente ligada, para o anterior também).
+2. Pilhas (Stacks) → Seguem o modelo LIFO (Last In, First Out).
 
-3. Pilhas (Stacks) → Seguem o modelo LIFO (Last In, First Out).
-
-4. Filas (Queues) → Seguem o modelo FIFO (First In, First Out).
+3. Filas (Queues) → Seguem o modelo FIFO (First In, First Out).
 
 # Estruturas Não Lineares
 
