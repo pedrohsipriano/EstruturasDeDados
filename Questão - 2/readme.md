@@ -33,3 +33,13 @@ Exemplos:
 1- Árvores (Trees) → Estruturas hierárquicas em que cada nó pode ter múltiplos filhos.
 
 2- Grafos (Graphs) → Conjunto de nós conectados por arestas, podendo ser direcionados ou não.
+
+
+<p1> Diferença entre Estrutura de Dados Lineares e Não Lineares <p1>
+<br>
+As estrutura de dados são formas organizadas de armezenar e manipular informações. Elas se dividem em lineares e não lineares.
+<br>
+<br>
+<p2> Estruturas Lineares
+<br>
+Os elementos são organizadas de maneiras sequencial.
