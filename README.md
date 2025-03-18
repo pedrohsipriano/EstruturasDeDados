@@ -49,4 +49,4 @@ Além do histórico de navegação, pilhas são utilizadas em outras funcionalid
 
 2. **SEDGEWICK, R.; WAYNE, K.** _Algorithms_. 4. ed. Boston: Addison-Wesley, 2011. 
 
-3. **MOZILLA DEVELOPER NETWORK (MDN).** _Documentação Oficial_. Disponível em: [https://developer.mozilla.org/](https://developer.mozilla.org/). Acesso em: 14 mar. 2025.
+3. **MOZILLA DEVELOPER NETWORK (MDN).** _Documentação Oficial_. Disponível em: [https://developer.mozilla.org/](https://developer.mozilla.org/). Acesso em: 14 mar. 2025. 
