@@ -8,4 +8,4 @@ Suponha que precisamos buscar um elemento em uma lista. Se usarmos uma lista des
 
 No código a seguir, demonstramos a diferença entre um código sem tratamento adequado e um código otimizado.
 
-[📜 Ver código Python](Arquivo.py)
+[📜 Ver código Python](Definição-Importância.py)
