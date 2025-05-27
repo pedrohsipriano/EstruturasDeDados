@@ -1,7 +1,7 @@
 
 class Medico:
 
-    def __init__(self, nome_completo, especialidade, id_medico): # Sem type hints na assinatura
+    def __init__(self, nome_completo, especialidade, id_medico):
         self.id_medico: str = id_medico
         self.nome_completo: str = nome_completo
         self.especialidade: str = especialidade
