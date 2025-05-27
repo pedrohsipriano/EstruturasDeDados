@@ -15,21 +15,44 @@ Este projeto simula um sistema de gerenciamento de pacientes em um ambiente de e
 
 ### `Paciente`
 
-A única classe presente no código é a `Paciente`, que representa cada indivíduo na fila de atendimento. A classe encapsula os dados de cada paciente, sendo utilizada em toda a lógica do sistema.
+A Classe `Pacriente` representa cada indivíduo na fila de atendimento. A classe encapsula os dados de cada paciente, sendo utilizada em toda a lógica do sistema.
 
 ```python
 class Paciente:
-    def __init__(self, id_paciente, nome_completo, prioridade_medica, data_admissao):
+
+    def __init__(self, nome_completo, prioridade_medica, id_paciente, data_admissao=None, id_medico_atribuido=None):
         self.id_paciente = id_paciente
         self.nome_completo = nome_completo
-        self.prioridade_medica = prioridade_medica
-        self.data_admissao = data_admissao
 
+        if not 1 <= prioridade_medica <= 5:
+            raise ValueError("Prioridade médica deve estar entre 1 e 5.")
+        self.prioridade_medica = prioridade_medica
+
+        self.data_admissao = data_admissao if data_admissao else datetime.datetime.now()
+        self.id_medico_atribuido = id_medico_atribuido
+
+    # Atribui um ID de médico a este paciente.
+    def atribuir_medico(self, id_medico):
+        self.id_medico_atribuido = id_medico
+
+    # Visualização dos dados completos do paciente.
     def __str__(self):
-        return f"{self.nome_completo} | Prioridade: {self.prioridade_medica} | Admissão: {self.data_admissao.strftime('%d/%m/%Y %H:%M')}"
+        medico_info = f"ID Médico: {self.id_medico_atribuido}" if self.id_medico_atribuido else "Médico: N/A"
+        return (f"Paciente: {self.nome_completo}, ID: {self.id_paciente}, Prioridade: {self.prioridade_medica}, "
+                f"Admissão: {self.data_admissao.strftime('%d/%m/%Y %H:%M:%S')}, {medico_info}")
+
+    def __repr__(self):
+        return (f"Paciente(ID: {self.id_paciente}, Nome: {self.nome_completo}, "
+                f"Prioridade: {self.prioridade_medica}, "
+                f"Admissão: {self.data_admissao.strftime('%Y-%m-%d %H:%M')})")
 ````
 
 Ela é utilizada para criar a lista de pacientes, ordenar, exibir e realizar a busca binária.
+
+
+### `Medico`
+
+/TODO
 
 ---
 
@@ -46,9 +69,9 @@ Exemplo de criação e ordenação da lista:
 
 ```python
 pacientes = [
-    Paciente("001", "Ana Souza", 2, datetime(2024, 5, 20, 9, 15)),
-    Paciente("002", "Carlos Lima", 1, datetime(2024, 5, 20, 9, 10)),
-    Paciente("003", "Beatriz Castro", 2, datetime(2024, 5, 20, 8, 55))
+    Paciente("Paulo Henrique", 2, 1, data_admissao=datetime.datetime(2023, 10, 20, 10, 0, 0)),
+    Paciente("Rodrigo Damasceno", 1, 2, data_admissao=datetime.datetime(2023, 10, 20, 10, 5, 0)),
+    Paciente("Filipe Pedais", 2, 3, data_admissao=datetime.datetime(2023, 10, 20, 9, 30, 0))
 ]
 
 ordenar_pacientes(pacientes)
@@ -56,9 +79,9 @@ ordenar_pacientes(pacientes)
 
 Após a ordenação, a lista será:
 
-1. Carlos Lima (prioridade 1)
-2. Beatriz Castro (prioridade 2, chegou antes)
-3. Ana Souza (prioridade 2, chegou depois)
+1. Rodrigo Damasceno (prioridade 1)
+2. Filipe Pedais (prioridade 2, chegou antes)
+3. Paulo Henrique (prioridade 2, chegou depois)
 
 ### Busca Binária
 
@@ -89,65 +112,3 @@ def ordenar_pacientes(pacientes):
             j -= 1
         pacientes[j + 1] = atual
 ```
-
-### Exemplo de funcionamento:
-
-Com os seguintes pacientes:
-
-* João (prioridade 3, 9h)
-* Maria (prioridade 1, 8h)
-* Lucas (prioridade 1, 10h)
-
-A ordenação correta será:
-
-1. Maria
-2. Lucas
-3. João
-
-Ou seja, respeita a prioridade **e** a hora de chegada em caso de empate.
-
----
-
-## Por Que Foi Uma Boa Escolha Usar Insertion Sort
-
-O uso do Insertion Sort foi estratégico pelas seguintes razões:
-
-* ✅ **Simplicidade:** Fácil de implementar e de entender.
-* ✅ **Estabilidade:** Pacientes com mesma prioridade e hora continuam na ordem original.
-* ✅ **Personalizável:** Adaptável para múltiplos critérios de ordenação (prioridade e data).
-* ✅ **Eficiente em listas pequenas:** Ideal para o contexto hospitalar com um número razoável de pacientes por dia.
-
----
-
-## Execução
-
-Ao rodar o script:
-
-1. Os pacientes são cadastrados com dados fictícios.
-2. A lista original é exibida.
-3. A função `ordenar_pacientes` organiza os pacientes.
-4. O sistema simula o atendimento dos pacientes com base na ordem.
-5. Uma busca por prioridade específica é feita e os resultados são mostrados.
-
-Exemplo de saída:
-
-```
-Lista de Pacientes:
-Carlos Lima | Prioridade: 1 | Admissão: 20/05/2024 09:10
-Beatriz Castro | Prioridade: 2 | Admissão: 20/05/2024 08:55
-Ana Souza | Prioridade: 2 | Admissão: 20/05/2024 09:15
-
-Paciente atendido: Carlos Lima
-Paciente atendido: Beatriz Castro
-Paciente atendido: Ana Souza
-
-Busca por prioridade 2:
-Beatriz Castro | Prioridade: 2 | Admissão: 20/05/2024 08:55
-Ana Souza | Prioridade: 2 | Admissão: 20/05/2024 09:15
-```
-
----
-
-## Conclusão
-
-Este sistema demonstra de forma clara e funcional como aplicar conceitos de estruturas de dados (insertion sort, busca binária) e orientação a objetos para resolver problemas do mundo real, como o gerenciamento de pacientes em um pronto-socorro.
