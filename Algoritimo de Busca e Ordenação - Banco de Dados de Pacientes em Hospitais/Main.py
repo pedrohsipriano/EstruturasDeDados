@@ -1,194 +1,9 @@
 import datetime
 from Paciente import Paciente
 from Medico import Medico
+import gerenciador_pacientes as gp
+import gerenciador_medicos as gm
 
-# PACIENTES
-def ordenar_pacientes(lista_pacientes):
-    for i in range(1, len(lista_pacientes)):
-        paciente_atual = lista_pacientes[i]
-        j = i - 1
-
-        while j >= 0 and \
-              (paciente_atual.prioridade_medica < lista_pacientes[j].prioridade_medica or \
-               (paciente_atual.prioridade_medica == lista_pacientes[j].prioridade_medica and \
-                paciente_atual.data_admissao < lista_pacientes[j].data_admissao)):
-            lista_pacientes[j + 1] = lista_pacientes[j]
-            j -= 1
-        lista_pacientes[j + 1] = paciente_atual
-
-def selecionar_proximo(lista_aguardando, contadores_atendimento):
-    if not lista_aguardando:
-        return None
-
-    if lista_aguardando[0].prioridade_medica == 1:
-        return lista_aguardando.pop(0)
-
-    idx_proximo_nivel_2 = -1
-    idx_proximo_nivel_3 = -1
-    idx_proximo_nivel_4 = -1
-
-    for i, p in enumerate(lista_aguardando):
-        if p.prioridade_medica == 2 and idx_proximo_nivel_2 == -1:
-            idx_proximo_nivel_2 = i
-        elif p.prioridade_medica == 3 and idx_proximo_nivel_3 == -1:
-            idx_proximo_nivel_3 = i
-        elif p.prioridade_medica == 4 and idx_proximo_nivel_4 == -1:
-            idx_proximo_nivel_4 = i
-
-        if idx_proximo_nivel_2 != -1 and idx_proximo_nivel_3 != -1 and idx_proximo_nivel_4 != -1:
-            break
-
-    if contadores_atendimento.get('atendidos_nivel2_desde_ultimo_nivel3_ou_4', 0) >= 2:
-        paciente_selecionado = None
-        if idx_proximo_nivel_3 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_3)
-            contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = 0
-            return paciente_selecionado
-        elif idx_proximo_nivel_4 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_4)
-            contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = 0
-            return paciente_selecionado
-        elif idx_proximo_nivel_2 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_2)
-            contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] += 1
-            return paciente_selecionado
-    else:
-        if idx_proximo_nivel_2 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_2)
-            contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = \
-                contadores_atendimento.get('atendidos_nivel2_desde_ultimo_nivel3_ou_4', 0) + 1
-            return paciente_selecionado
-        elif idx_proximo_nivel_3 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_3)
-            contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = 0
-            return paciente_selecionado
-        elif idx_proximo_nivel_4 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_4)
-            contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = 0
-            return paciente_selecionado
-
-    if lista_aguardando:
-        return lista_aguardando.pop(0)
-
-    return None
-
-def buscar_pacientes_binaria(lista_pacientes, prioridade_alvo, data_admissao_alvo=None):
-
-    resultados = []
-    esquerda = 0
-    direita = len(lista_pacientes) - 1
-    primeiro_encontrado_idx = -1
-
-    while esquerda <= direita:
-        meio = (esquerda + direita) // 2
-        paciente_meio = lista_pacientes[meio]
-
-        if paciente_meio.prioridade_medica < prioridade_alvo:
-            esquerda = meio + 1
-        elif paciente_meio.prioridade_medica > prioridade_alvo:
-            direita = meio - 1
-        else:
-            if data_admissao_alvo is not None:
-                if paciente_meio.data_admissao < data_admissao_alvo:
-                    esquerda = meio + 1
-                elif paciente_meio.data_admissao > data_admissao_alvo:
-                    direita = meio - 1
-                else:
-                    primeiro_encontrado_idx = meio
-                    direita = meio - 1
-            else:
-                primeiro_encontrado_idx = meio
-                direita = meio - 1
-
-    if primeiro_encontrado_idx != -1:
-        idx = primeiro_encontrado_idx
-        temp_resultados_esquerda = []
-        while idx >= 0 and \
-              lista_pacientes[idx].prioridade_medica == prioridade_alvo and \
-              (data_admissao_alvo is None or lista_pacientes[idx].data_admissao == data_admissao_alvo):
-            temp_resultados_esquerda.append(lista_pacientes[idx])
-            idx -= 1
-        resultados.extend(reversed(temp_resultados_esquerda))
-
-        idx = primeiro_encontrado_idx + 1
-        while idx < len(lista_pacientes) and \
-              lista_pacientes[idx].prioridade_medica == prioridade_alvo and \
-              (data_admissao_alvo is None or lista_pacientes[idx].data_admissao == data_admissao_alvo):
-            resultados.append(lista_pacientes[idx])
-            idx += 1
-    return resultados
-
-# MEDICOS
-def ordenar_medicos(lista_medicos, criterio="nome"):
-    # Ordena a lista de Médicos usando Insertion Sort.
-    n = len(lista_medicos)
-    for i in range(1, n):
-        medico_atual = lista_medicos[i]
-        j = i - 1
-
-        deve_trocar = False
-        if j >= 0: # Garante que lista_medicos[j] é válido
-            if criterio == "nome":
-                if medico_atual.nome_completo.lower() < lista_medicos[j].nome_completo.lower():
-                    deve_trocar = True
-            elif criterio == "especialidade":
-                if medico_atual.especialidade.lower() < lista_medicos[j].especialidade.lower():
-                    deve_trocar = True
-                elif medico_atual.especialidade.lower() == lista_medicos[j].especialidade.lower() and \
-                     medico_atual.nome_completo.lower() < lista_medicos[j].nome_completo.lower():
-                    deve_trocar = True
-            else: 
-                if medico_atual.nome_completo.lower() < lista_medicos[j].nome_completo.lower():
-                    deve_trocar = True
-        
-        while j >= 0 and deve_trocar:
-            lista_medicos[j + 1] = lista_medicos[j]
-            j -= 1
-            if j >= 0:
-                if criterio == "nome":
-                    deve_trocar = medico_atual.nome_completo.lower() < lista_medicos[j].nome_completo.lower()
-                elif criterio == "especialidade":
-                    deve_trocar = (medico_atual.especialidade.lower() < lista_medicos[j].especialidade.lower() or
-                                 (medico_atual.especialidade.lower() == lista_medicos[j].especialidade.lower() and
-                                  medico_atual.nome_completo.lower() < lista_medicos[j].nome_completo.lower()))
-                else:
-                    deve_trocar = medico_atual.nome_completo.lower() < lista_medicos[j].nome_completo.lower()
-            else:
-                deve_trocar = False
-        lista_medicos[j + 1] = medico_atual
-
-def buscar_medico_por_id(lista_medicos, id_alvo):
-    # Busca linear por um médico com o ID especificado
-    for medico in lista_medicos:
-        if medico.id_medico == id_alvo:
-            return medico
-    return None
-
-def buscar_medicos_por_nome(lista_medicos, nome_parcial):
-    # Busca linear por médicos cujo nome contenha nome_parcial
-    resultados = []
-    nome_parcial_lower = nome_parcial.lower()
-    for medico in lista_medicos:
-        if nome_parcial_lower in medico.nome_completo.lower():
-            resultados.append(medico)
-    return resultados
-
-def buscar_medicos_por_especialidade(lista_medicos, especialidade_alvo):
-    # Busca linear por médicos com a especialidade especificada
-    resultados = []
-    especialidade_alvo_lower = especialidade_alvo.lower()
-    for medico in lista_medicos:
-        if medico.especialidade.lower() == especialidade_alvo_lower:
-            resultados.append(medico)
-    return resultados
-
-def buscar_pacientes_do_medico(lista_pacientes, id_medico_alvo):
-    # Busca linear por pacientes atribuídos ao médico com o ID especificado. Deve conter o id em paciente
-    resultados = []
-    for paciente in lista_pacientes:
-        if paciente.id_medico_atribuido == id_medico_alvo:
-            resultados.append(paciente)
-    return resultados
 
 # EXECUÇÃO E SAÍDA
 if __name__ == "__main__":
@@ -212,7 +27,7 @@ if __name__ == "__main__":
     for p in lista_de_pacientes:
         print(p)
 
-    ordenar_pacientes(lista_de_pacientes)
+    gp.ordenar_pacientes(lista_de_pacientes)
 
     print("\n--- Lista de Pacientes Ordenada por Prioridade (Insertion Sort) ---\n")
     for p in lista_de_pacientes:
@@ -232,12 +47,12 @@ if __name__ == "__main__":
     for m in lista_de_medicos:
         print(m)
 
-    ordenar_medicos(lista_de_medicos, "especialidade")
+    gm.ordenar_medicos(lista_de_medicos, "especialidade")
     print("\nLista de Médicos Ordenada por Especialidade (e Nome):")
     for m in lista_de_medicos:
         print(m)
 
-    ordenar_medicos(lista_de_medicos, "nome")
+    gm.ordenar_medicos(lista_de_medicos, "nome")
     print("\nLista de Médicos Ordenada por Nome:")
     for m in lista_de_medicos:
         print(m)
@@ -253,7 +68,7 @@ if __name__ == "__main__":
     for p in lista_de_pacientes:
         print(p) 
 
-    # FILA DE ATENDIMENTO / SAIDA ORDENACAO
+    # FILA DE ATENDIMENTO / SAIDA ORDENAÇÃO
     print("\n\n--- Simulação da Fila de Atendimento () ---\n")
     lista_para_atendimento = list(lista_de_pacientes)
 
@@ -272,14 +87,14 @@ if __name__ == "__main__":
         for p_fila in lista_para_atendimento:
             print(f"  {p_fila}")
 
-        proximo_a_atender = selecionar_proximo(lista_para_atendimento, contadores_fila)
+        proximo_a_atender = gp.selecionar_proximo(lista_para_atendimento, contadores_fila)
 
         if proximo_a_atender:
             pacientes_atendidos_ordem.append(proximo_a_atender)
-            # Tenta buscar o nome do médico para exibição, se houver ID
+            # Tenta buscar o nome do médico para exibição
             nome_medico_responsavel = "N/A"
             if proximo_a_atender.id_medico_atribuido:
-                medico_obj = buscar_medico_por_id(lista_de_medicos, proximo_a_atender.id_medico_atribuido)
+                medico_obj = gm.buscar_medico_por_id(lista_de_medicos, proximo_a_atender.id_medico_atribuido)
                 if medico_obj:
                     nome_medico_responsavel = medico_obj.nome_completo
             
@@ -301,7 +116,7 @@ if __name__ == "__main__":
     print("\n\n--- Demonstração de Funções de Busca ---")
     
     print("\nBuscando Pacientes com Prioridade 1 (Busca Binária):")
-    resultados_p1 = buscar_pacientes_binaria(lista_de_pacientes, 1)
+    resultados_p1 = gp.buscar_pacientes_binaria(lista_de_pacientes, 1)
     if resultados_p1:
         for p_res in resultados_p1:
             print(f"- {p_res.nome_completo} (Prioridade: {p_res.prioridade_medica}, Admissão: {p_res.data_admissao.strftime('%d/%m/%Y %H:%M')})")
@@ -310,7 +125,7 @@ if __name__ == "__main__":
 
     data_especifica_busca = datetime.datetime(2023, 10, 20, 9, 30, 0)
     print(f"\nBuscando Pacientes com Prioridade 3 e Admissão em {data_especifica_busca.strftime('%d/%m/%Y %H:%M:%S')}:")
-    resultados_p3_data = buscar_pacientes_binaria(lista_de_pacientes, 3, data_especifica_busca)
+    resultados_p3_data = gp.buscar_pacientes_binaria(lista_de_pacientes, 3, data_especifica_busca)
     if resultados_p3_data:
         for p_res in resultados_p3_data:
             print(f"- {p_res.nome_completo} (Prioridade: {p_res.prioridade_medica}, Admissão: {p_res.data_admissao.strftime('%d/%m/%Y %H:%M')})")
@@ -318,14 +133,14 @@ if __name__ == "__main__":
         print("Nenhum paciente encontrado com estes critérios.")
 
     print(f"\nBuscando médico por ID ('{medico1.id_medico}'):")
-    medico_encontrado = buscar_medico_por_id(lista_de_medicos, medico1.id_medico)
+    medico_encontrado = gm.buscar_medico_por_id(lista_de_medicos, medico1.id_medico)
     if medico_encontrado:
         print(f"- Encontrado: {medico_encontrado}") 
     else:
         print(f"Médico com ID '{medico1.id_medico}' não encontrado.")
 
     print("\nBuscando médicos por nome parcial 'Grey':")
-    medicos_encontrados_nome = buscar_medicos_por_nome(lista_de_medicos, "Grey")
+    medicos_encontrados_nome = gm.buscar_medicos_por_nome(lista_de_medicos, "Grey")
     if medicos_encontrados_nome:
         for m_res in medicos_encontrados_nome:
             print(f"- {m_res}")
@@ -333,7 +148,7 @@ if __name__ == "__main__":
         print("Nenhum médico encontrado com 'Grey' no nome.")
 
     print("\nBuscando médicos por especialidade 'Diagnóstico':")
-    medicos_encontrados_esp = buscar_medicos_por_especialidade(lista_de_medicos, "Diagnóstico")
+    medicos_encontrados_esp = gm.buscar_medicos_por_especialidade(lista_de_medicos, "Diagnóstico")
     if medicos_encontrados_esp:
         for m_res in medicos_encontrados_esp:
             print(f"- {m_res}")
@@ -341,7 +156,7 @@ if __name__ == "__main__":
         print("Nenhum médico encontrado com a especialidade 'Diagnóstico'.")
     
     print(f"\nBuscando pacientes do {medico1.nome_completo} (ID: {medico1.id_medico}):")
-    pacientes_do_medico = buscar_pacientes_do_medico(lista_de_pacientes, medico1.id_medico)
+    pacientes_do_medico = gm.buscar_pacientes_do_medico(lista_de_pacientes, medico1.id_medico)
     if pacientes_do_medico:
         for p_res in pacientes_do_medico:
             print(f"- {p_res.nome_completo} (ID Paciente: {p_res.id_paciente}, Prioridade: {p_res.prioridade_medica})")
