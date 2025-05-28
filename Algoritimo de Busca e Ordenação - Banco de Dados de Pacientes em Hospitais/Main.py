@@ -1,5 +1,4 @@
 import datetime
-import uuid
 from Paciente import Paciente
 from Medico import Medico
 
@@ -222,11 +221,11 @@ if __name__ == "__main__":
     
     # SAÍDA MEDICOS
     print("\n\n--- Cadastro e Demonstração de Médicos ---")
-    medico1 = Medico("MED-001", "Dr. Gregory House", "Diagnóstico")
-    medico2 = Medico("MED-002", "Dra. Meredith Grey", "Cirurgia Geral")
-    medico3 = Medico("MED-003", "Dr. Derek Shepherd", "Neurocirurgia")
-    medico4 = Medico("MED-004", "Dra. Cristina Yang", "Cardiologia")
-    medico5 = Medico("MED-005", "Dr. James Wilson", "Oncologia")
+    medico1 = Medico("Dr. Gregory House","Diagnóstico","MED-001")
+    medico2 = Medico( "Dra. Meredith Grey", "Cirurgia Geral","MED-002")
+    medico3 = Medico("Dr. Derek Shepherd", "Neurocirurgia","MED-003")
+    medico4 = Medico( "Dra. Cristina Yang", "Cardiologia","MED-004")
+    medico5 = Medico( "Dr. James Wilson", "Oncologia","MED-005")
 
     lista_de_medicos = [medico1, medico2, medico3, medico4, medico5]
     print("Lista Original de Médicos:")
