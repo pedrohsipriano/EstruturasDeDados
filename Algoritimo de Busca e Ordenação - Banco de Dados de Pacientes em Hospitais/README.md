@@ -166,7 +166,7 @@ def ordenar_pacientes(pacientes):
 | Nome Completo                       | RGM      | GitHub                                               |
 | ----------------------------------- | ---------| ---------------------------------------------------- |
 | Marcos Henrique Gomes Pereira       | 39316084 | [@Socram](https://github.com/vedSocram)              |
-| Paulo Roberto Ferreira Brito        | 39163482 | [@_loiolapaulo](https://github.com/loiolapaulo)      |
+| Paulo Henrique de Melo Loiola       | 37873822 | [@_loiolapaulo](https://github.com/loiolapaulo)      |
 | Rodrigo Damasceno Santos            | 39188949 | [@RodrigoHD79](https://github.com/RodrigoHD79)       |
 | Pedro Henrique Sipriano Cavalcante  | 39439526 | [@pedrohsipriano](https://github.com/pedrohsipriano) |
 | Filipe Pedais Carvalho              | 38823136 | [@FilipePedais](https://github.com/FilipePedais)     |
