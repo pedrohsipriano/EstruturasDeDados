@@ -69,5 +69,3 @@ Estudo da aplicação de **pilhas (stacks)** para controle de histórico em nave
 | Filipe Pedais Carvalho         | [@FilipePedais](https://github.com/FilipePedais)     |
 
 ---
-
-Este repositório é ideal para estudo e compreensão prática de estruturas de dados clássicas aplicadas a problemas do mundo real.  
