@@ -1,52 +1,73 @@
-# Gerenciamento de Histórico de Navegação com Pilha  
+# Projetos de Estruturas de Dados: Gerenciamento Hospitalar e Histórico de Navegação  
 
-Este repositório apresenta um estudo sobre como **pilhas (stacks)** podem ser utilizadas para gerenciar o histórico de navegação em navegadores web. A estrutura de **pilha** é amplamente usada para implementar a funcionalidade de "voltar" e "avançar" entre páginas visitadas.  
-
-## O que é uma Pilha?  
-
-Uma **pilha** é uma estrutura de dados baseada no princípio **LIFO** (*Last In, First Out*), onde o último elemento inserido é o primeiro a ser removido. As operações principais em uma pilha são:  
-
-- **Empilhar (Push)**: Adiciona um elemento no topo da pilha.  
-- **Desempilhar (Pop)**: Remove e retorna o elemento no topo da pilha.  
-
-### Analogia com o Histórico de Navegação  
-
-Os navegadores web utilizam pilhas para armazenar páginas visitadas. Quando o usuário navega para uma nova página, ela é empilhada no histórico. Se o usuário clicar no botão "Voltar", a página atual é removida da pilha de histórico e movida para uma **pilha auxiliar**, permitindo avançar novamente caso desejado.  
+Este repositório contém dois projetos focados no uso prático de estruturas de dados para resolver problemas reais:
 
 ---
 
-## Como a Pilha é Usada no Histórico de Navegação?  
+## 1. Sistema de Gerenciamento de Pacientes em Ambiente Hospitalar  
 
-O gerenciamento do histórico de navegação pode ser feito utilizando **duas pilhas**:  
+### Descrição  
+Projeto que simula o gerenciamento de pacientes em um hospital de emergência, priorizando atendimentos conforme gravidade clínica e ordem de chegada.  
 
-1. **Pilha de histórico:** Armazena as páginas visitadas na ordem de acesso.  
-2. **Pilha de avançar:** Guarda as páginas quando o usuário pressiona "Voltar", permitindo que ele possa retorná-las caso deseje.  
+### Funcionalidades Principais  
+- Cadastro de pacientes com níveis de prioridade médica (1 a 5).  
+- Ordenação da fila de atendimento utilizando **Insertion Sort adaptado**, baseado em prioridade e tempo de admissão.  
+- Busca eficiente de pacientes por prioridade utilizando **Busca Binária**.  
+- Associação dinâmica de médicos aos pacientes.  
+- Simulação de um atendimento justo e eficiente, refletindo o funcionamento real de emergências hospitalares.
 
-### Funcionamento  
-
-- Quando o usuário **acessa uma nova página**, ela é adicionada ao topo da **pilha de histórico**.  
-- Ao pressionar **"Voltar"**, a página atual é removida da **pilha de histórico** e inserida na **pilha de avançar**.  
-- Se o usuário pressionar **"Avançar"**, a página é removida da **pilha de avançar** e recolocada no topo da **pilha de histórico**.  
-- Caso uma nova página seja acessada após pressionar "Voltar", a **pilha de avançar é esvaziada**, pois não há mais um caminho possível para avançar.  
-
----
-
-## Aplicações Comuns de Pilhas em Navegadores  
-
-Além do histórico de navegação, pilhas são utilizadas em outras funcionalidades dos navegadores:  
-
-1. **Navegação por guias (tabs)**  
-   - Algumas implementações permitem alternar entre guias abertas usando pilhas.  
-
-2. **Undo/Redo em formulários e editores de texto**  
-   - O navegador pode armazenar alterações feitas pelo usuário, permitindo desfazer e refazer ações.   
+### Tecnologias e Conceitos  
+- Programação orientada a objetos (Python).  
+- Algoritmos clássicos de ordenação e busca.  
+- Gerenciamento de listas com critérios compostos.
 
 ---
 
-## Referências Bibliográficas  
+## 2. Gerenciamento de Histórico de Navegação com Pilha  
 
-1. **CORMEN, T. H.; LEISERSON, C. E.; RIVEST, R. L.; STEIN, C.** _Introduction to Algorithms_. 3. ed. Cambridge: MIT Press, 2009.
+### Descrição  
+Estudo da aplicação de **pilhas (stacks)** para controle de histórico em navegadores web, incluindo funcionalidades de "voltar" e "avançar" páginas visitadas.  
 
-2. **SEDGEWICK, R.; WAYNE, K.** _Algorithms_. 4. ed. Boston: Addison-Wesley, 2011. 
+### Conceitos-Chave  
+- Pilha (LIFO - Last In, First Out).  
+- Operações básicas: empilhar (push) e desempilhar (pop).  
+- Uso de duas pilhas para gerenciar o histórico e a navegação de avanço.  
+- Exemplos práticos de como navegadores implementam o gerenciamento do histórico.
 
-3. **MOZILLA DEVELOPER NETWORK (MDN).** _Documentação Oficial_. Disponível em: [https://developer.mozilla.org/](https://developer.mozilla.org/). Acesso em: 14 mar. 2025. 
+### Aplicações Adicionais  
+- Navegação entre guias (tabs).  
+- Funcionalidades de Undo/Redo em editores e formulários.
+
+---
+
+## Estruturas e Algoritmos Usados  
+
+| Estrutura/Algoritmo    | Aplicação no Projeto                      | Descrição                                                        |
+|-----------------------|------------------------------------------|------------------------------------------------------------------|
+| Pilha (Stack)         | Histórico de Navegação                    | Armazenamento e manipulação do histórico de páginas visitadas.  |
+| Insertion Sort        | Ordenação da fila de pacientes            | Ordena pacientes por prioridade e tempo de chegada.              |
+| Busca Binária         | Busca rápida de pacientes por prioridade  | Localiza pacientes em listas ordenadas de forma eficiente.       |
+
+---
+
+## Referências  
+
+- CORMEN, T. H. et al. *Introduction to Algorithms*. 3ª ed., MIT Press, 2009.  
+- SEDGEWICK, R.; WAYNE, K. *Algorithms*. 4ª ed., Addison-Wesley, 2011.  
+- Mozilla Developer Network (MDN). [https://developer.mozilla.org/](https://developer.mozilla.org/).  
+
+---
+
+## Participantes  
+
+| Nome                            | GitHub                                               |
+|--------------------------------|------------------------------------------------------|
+| Marcos Henrique Gomes Pereira  | [@Socram](https://github.com/vedSocram)              |
+| Paulo Henrique de Melo Loiola  | [@\_loiolapaulo](https://github.com/loiolapaulo)     |
+| Rodrigo Damasceno Santos       | [@RodrigoHD79](https://github.com/RodrigoHD79)       |
+| Pedro Henrique Sipriano Cavalcante | [@pedrohsipriano](https://github.com/pedrohsipriano) |
+| Filipe Pedais Carvalho         | [@FilipePedais](https://github.com/FilipePedais)     |
+
+---
+
+Este repositório é ideal para estudo e compreensão prática de estruturas de dados clássicas aplicadas a problemas do mundo real.  
