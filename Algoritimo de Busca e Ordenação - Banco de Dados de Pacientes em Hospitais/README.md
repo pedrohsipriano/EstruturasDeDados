@@ -1,6 +1,6 @@
 # Sistema de Gerenciamento de Pacientes
 
-## Contexto
+## Introdução
 
 Este projeto simula um sistema computacional para gerenciar pacientes em um ambiente hospitalar de emergência. O sistema realiza:
 
@@ -11,92 +11,149 @@ Este projeto simula um sistema computacional para gerenciar pacientes em um ambi
 
 ---
 
-## Estrutura de Classes
+### 🧠 Lógica de Atendimento Simulado
+
+O sistema simula o comportamento de um hospital de emergência, onde:
+
+- Pacientes graves são atendidos primeiro, respeitando níveis de prioridade médica.
+- Médicos são atribuídos dinamicamente aos pacientes conforme disponibilidade e necessidade.
+- A combinação de busca e ordenação otimizam o tempo de resposta, principalmente quando há muitos pacientes na fila, garantindo eficiência e justiça no atendimento.
+
+---
+
+## Estrutura de Classes e Gerenciadores
 
 ### Classe `Paciente`
 
-A classe `Paciente` define a estrutura e os comportamentos essenciais de um paciente no sistema. Seus atributos incluem informações pessoais, prioridade médica, data de admissão e ID do médico responsável.
+Representa um paciente no sistema, contendo dados essenciais como:
+
+- `id_paciente`: Identificador único do paciente.
+- `nome_completo`: Nome completo do paciente.
+- `prioridade_medica`: Um valor inteiro de 1 a 5 que indica a gravidade (1 = mais urgente).
+- `data_admissao`: Momento em que o paciente foi registrado/admitido.
+- `id_medico_atribuido`: Referência ao médico responsável pelo atendimento (pode ser `None` até ser atribuído).
 
 ```python
-import datetime
-
 class Paciente:
-
     def __init__(self, nome_completo, prioridade_medica, id_paciente, data_admissao=None, id_medico_atribuido=None):
-        self.id_paciente = id_paciente
-        self.nome_completo = nome_completo
-
-        if not 1 <= prioridade_medica <= 5:
-            raise ValueError("Prioridade médica deve estar entre 1 e 5.")
-        self.prioridade_medica = prioridade_medica
-
-        self.data_admissao = data_admissao if data_admissao else datetime.datetime.now()
-        self.id_medico_atribuido = id_medico_atribuido
-
+        # validação e atribuição de atributos
+        ...
     def atribuir_medico(self, id_medico):
-        self.id_medico_atribuido = id_medico
+        # atribui um médico responsável
+        ...
+````
 
-    def __str__(self):
-        medico_info = f"ID Médico: {self.id_medico_atribuido}" if self.id_medico_atribuido else "Médico: N/A"
-        return (f"Paciente: {self.nome_completo}, ID: {self.id_paciente}, Prioridade: {self.prioridade_medica}, "
-                f"Admissão: {self.data_admissao.strftime('%d/%m/%Y %H:%M:%S')}, {medico_info}")
+Essa classe permite controlar o estado do paciente e registrar o médico que o atende.
 
-    def __repr__(self):
-        return (f"Paciente(ID: {self.id_paciente}, Nome: {self.nome_completo}, "
-                f"Prioridade: {self.prioridade_medica}, "
-                f"Admissão: {self.data_admissao.strftime('%Y-%m-%d %H:%M')})")
-```
+---
 
 ### Classe `Medico`
 
-Representa os profissionais da saúde vinculados a pacientes.
+Define os profissionais médicos cadastrados no sistema, com os seguintes atributos:
+
+* `id_medico`: Identificador único do médico.
+* `nome_completo`: Nome completo do médico.
+* `especialidade`: Área médica do profissional (ex: cardiologia, clínica geral).
 
 ```python
 class Medico:
-
     def __init__(self, nome_completo, especialidade, id_medico):
-        self.id_medico: str = id_medico
-        self.nome_completo: str = nome_completo
-        self.especialidade: str = especialidade
+        # definição de atributos
+        ...
+```
 
-    def __str__(self):
-        return (f"Médico: {self.nome_completo}, ID: {self.id_medico}, Especialidade: {self.especialidade}")
+Serve para manter o cadastro e facilitar a atribuição de médicos aos pacientes.
 
-    def __repr__(self):
-        return (f"Medico(ID: {self.id_medico}, Nome: {self.nome_completo}, "
-                f"Especialidade: {self.especialidade})")
+---
+
+### Classe `Gerenciador_Pacientes`
+
+Esta classe é responsável por:
+
+* Armazenar a lista de pacientes.
+* Realizar operações de cadastro, remoção e busca de pacientes.
+* Ordenar a lista com base na prioridade médica e data de admissão.
+* Gerenciar atribuições de médicos aos pacientes.
+
+Exemplo simplificado:
+
+```python
+class Gerenciador_Pacientes:
+    def __init__(self):
+        self.pacientes = []
+
+    def adicionar_paciente(self, paciente):
+        self.pacientes.append(paciente)
+        self.ordenar_pacientes()
+
+    def ordenar_pacientes(self):
+        # Implementação do insertion sort baseado em prioridade e data
+        ...
+
+    def buscar_por_prioridade(self, prioridade):
+        # Busca binária para localizar pacientes com prioridade específica
+        ...
+
+    def atribuir_medico(self, id_paciente, id_medico):
+        # Atribui médico a paciente pelo ID
+        ...
+```
+
+Essa classe abstrai a lógica de manipulação dos pacientes, garantindo a integridade da lista e eficiência nas operações.
+
+---
+
+### Classe `Gerenciador_Medicos`
+
+Semelhante ao gerenciador de pacientes, mantém e manipula a lista de médicos:
+
+* Cadastro e remoção de médicos.
+* Busca por ID ou especialidade.
+* Facilita a atribuição rápida em casos de emergência.
+
+Exemplo:
+
+```python
+class GerenciadorMedicos:
+    def __init__(self):
+        self.medicos = []
+
+    def adicionar_medico(self, medico):
+        self.medicos.append(medico)
+
+    def buscar_por_id(self, id_medico):
+        # Busca linear para localizar médico pelo ID
+        ...
 ```
 
 ---
 
 ## Ordenação e Busca
 
-### Ordenação
+### Algoritmo de Ordenação: Insertion Sort Adaptado
 
-A lista de pacientes é ordenada considerando:
+O sistema utiliza uma versão adaptada do **Insertion Sort** para ordenar a lista de pacientes com base em dois critérios:
 
-1. **Prioridade médica** (nível 1 é o mais urgente).
-2. **Data de admissão** (quem chegou primeiro é atendido primeiro em caso de empate).
+1. **Prioridade médica** — onde o nível 1 é o mais urgente.
+2. **Data de admissão** — em caso de empate na prioridade, quem chegou primeiro é atendido primeiro.
 
 ```python
-pacientes = [
-    Paciente("Paulo Henrique", 2, 1, data_admissao=datetime.datetime(2023, 10, 20, 10, 0, 0)),
-    Paciente("Rodrigo Damasceno", 1, 2, data_admissao=datetime.datetime(2023, 10, 20, 10, 5, 0)),
-    Paciente("Filipe Pedais", 2, 3, data_admissao=datetime.datetime(2023, 10, 20, 9, 30, 0))
-]
-
-ordenar_pacientes(pacientes)
+def ordenar_pacientes(pacientes):
+    for i in range(1, len(pacientes)):
+        atual = pacientes[i]
+        j = i - 1
+        while j >= 0 and (
+            (pacientes[j].prioridade_medica > atual.prioridade_medica) or
+            (pacientes[j].prioridade_medica == atual.prioridade_medica and pacientes[j].data_admissao > atual.data_admissao)
+        ):
+            pacientes[j + 1] = pacientes[j]
+            j -= 1
+        pacientes[j + 1] = atual
 ```
 
-Resultado:
+### Algoritmo de Busca: Busca Binária
 
-1. Rodrigo Damasceno (prioridade 1)
-2. Filipe Pedais (prioridade 2, chegou antes)
-3. Paulo Henrique (prioridade 2, chegou depois)
-
-### Busca Binária
-
-Busca rápida por pacientes com base na prioridade médica:
+Para acelerar a localização de pacientes em listas ordenadas, o sistema usa o algoritmo de **busca binária**.
 
 ```python
 def buscar_pacientes_binaria(pacientes, prioridade):
@@ -123,51 +180,20 @@ def buscar_pacientes_binaria(pacientes, prioridade):
 
 ---
 
-## Algoritmo de Ordenação Usado: Insertion Sort
-
-O sistema utiliza uma versão adaptada do Insertion Sort para considerar múltiplos critérios de ordenação:
-
-```python
-def ordenar_pacientes(pacientes):
-    for i in range(1, len(pacientes)):
-        atual = pacientes[i]
-        j = i - 1
-        while j >= 0 and (
-            (atual.prioridade_medica < pacientes[j].prioridade_medica) or
-            (atual.prioridade_medica == pacientes[j].prioridade_medica and atual.data_admissao < pacientes[j].data_admissao)
-        ):
-            pacientes[j + 1] = pacientes[j]
-            j -= 1
-        pacientes[j + 1] = atual
-```
-
----
-
 ## Aplicação Prática: Sistemas Hospitalares
 
-### Ordenação
-
-* Por nome, data de admissão, prioridade médica ou cronologia de atendimento.
-
-### Busca
-
-* Por nome, CPF, ID, ou condição médica.
-
-### Sinergia
-
-* Em triagens de emergência, pacientes são ordenados por gravidade.
-* A busca binária permite localizar rapidamente um paciente.
-* O histórico do paciente pode ser acessado de forma organizada e rápida.
+* **Ordenação**: organiza pacientes para atendimento correto conforme urgência e tempo de espera.
+* **Busca**: encontra rapidamente pacientes com características específicas.
+* **Gerenciamento**: associa médicos a pacientes, facilitando o fluxo do atendimento.
 
 ---
 
 ### Participantes do Projeto
 
-| Nome Completo                       | RGM      | GitHub                                               |
-| ----------------------------------- | ---------| ---------------------------------------------------- |
-| Marcos Henrique Gomes Pereira       | 39316084 | [@Socram](https://github.com/vedSocram)              |
-| Paulo Henrique de Melo Loiola       | 37873822 | [@_loiolapaulo](https://github.com/loiolapaulo)      |
-| Rodrigo Damasceno Santos            | 39188949 | [@RodrigoHD79](https://github.com/RodrigoHD79)       |
-| Pedro Henrique Sipriano Cavalcante  | 39439526 | [@pedrohsipriano](https://github.com/pedrohsipriano) |
-| Filipe Pedais Carvalho              | 38823136 | [@FilipePedais](https://github.com/FilipePedais)     |
-
+| Nome Completo                      | RGM      | GitHub                                               |
+| ---------------------------------- | -------- | ---------------------------------------------------- |
+| Marcos Henrique Gomes Pereira      | 39316084 | [@Socram](https://github.com/vedSocram)              |
+| Paulo Henrique de Melo Loiola      | 37873822 | [@\_loiolapaulo](https://github.com/loiolapaulo)     |
+| Rodrigo Damasceno Santos           | 39188949 | [@RodrigoHD79](https://github.com/RodrigoHD79)       |
+| Pedro Henrique Sipriano Cavalcante | 39439526 | [@pedrohsipriano](https://github.com/pedrohsipriano) |
+| Filipe Pedais Carvalho             | 38823136 | [@FilipePedais](https://github.com/FilipePedais)     |
