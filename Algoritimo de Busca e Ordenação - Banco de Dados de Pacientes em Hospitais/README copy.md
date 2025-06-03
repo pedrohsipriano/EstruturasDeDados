@@ -21,60 +21,109 @@ O sistema simula o comportamento de um hospital de emergência, onde:
 
 ---
 
-## Estrutura de Classes
+## Estrutura de Classes e Gerenciadores
 
 ### Classe `Paciente`
 
-A classe `Paciente` define a estrutura e os comportamentos essenciais de um paciente no sistema. Seus atributos incluem informações pessoais, prioridade médica, data de admissão e ID do médico responsável.
+Representa um paciente no sistema, contendo dados essenciais como:
+
+- `id_paciente`: Identificador único do paciente.
+- `nome_completo`: Nome completo do paciente.
+- `prioridade_medica`: Um valor inteiro de 1 a 5 que indica a gravidade (1 = mais urgente).
+- `data_admissao`: Momento em que o paciente foi registrado/admitido.
+- `id_medico_atribuido`: Referência ao médico responsável pelo atendimento (pode ser `None` até ser atribuído).
 
 ```python
-import datetime
-
 class Paciente:
-
     def __init__(self, nome_completo, prioridade_medica, id_paciente, data_admissao=None, id_medico_atribuido=None):
-        self.id_paciente = id_paciente
-        self.nome_completo = nome_completo
-
-        if not 1 <= prioridade_medica <= 5:
-            raise ValueError("Prioridade médica deve estar entre 1 e 5.")
-        self.prioridade_medica = prioridade_medica
-
-        self.data_admissao = data_admissao if data_admissao else datetime.datetime.now()
-        self.id_medico_atribuido = id_medico_atribuido
-
+        # validação e atribuição de atributos
+        ...
     def atribuir_medico(self, id_medico):
-        self.id_medico_atribuido = id_medico
-
-    def __str__(self):
-        medico_info = f"ID Médico: {self.id_medico_atribuido}" if self.id_medico_atribuido else "Médico: N/A"
-        return (f"Paciente: {self.nome_completo}, ID: {self.id_paciente}, Prioridade: {self.prioridade_medica}, "
-                f"Admissão: {self.data_admissao.strftime('%d/%m/%Y %H:%M:%S')}, {medico_info}")
-
-    def __repr__(self):
-        return (f"Paciente(ID: {self.id_paciente}, Nome: {self.nome_completo}, "
-                f"Prioridade: {self.prioridade_medica}, "
-                f"Admissão: {self.data_admissao.strftime('%Y-%m-%d %H:%M')})")
+        # atribui um médico responsável
+        ...
 ````
+
+Essa classe permite controlar o estado do paciente e registrar o médico que o atende.
+
+---
 
 ### Classe `Medico`
 
-Representa os profissionais da saúde vinculados a pacientes.
+Define os profissionais médicos cadastrados no sistema, com os seguintes atributos:
+
+* `id_medico`: Identificador único do médico.
+* `nome_completo`: Nome completo do médico.
+* `especialidade`: Área médica do profissional (ex: cardiologia, clínica geral).
 
 ```python
 class Medico:
-
     def __init__(self, nome_completo, especialidade, id_medico):
-        self.id_medico: str = id_medico
-        self.nome_completo: str = nome_completo
-        self.especialidade: str = especialidade
+        # definição de atributos
+        ...
+```
 
-    def __str__(self):
-        return (f"Médico: {self.nome_completo}, ID: {self.id_medico}, Especialidade: {self.especialidade}")
+Serve para manter o cadastro e facilitar a atribuição de médicos aos pacientes.
 
-    def __repr__(self):
-        return (f"Medico(ID: {self.id_medico}, Nome: {self.nome_completo}, "
-                f"Especialidade: {self.especialidade})")
+---
+
+### Classe `GerenciadorPacientes`
+
+Esta classe é responsável por:
+
+* Armazenar a lista de pacientes.
+* Realizar operações de cadastro, remoção e busca de pacientes.
+* Ordenar a lista com base na prioridade médica e data de admissão.
+* Gerenciar atribuições de médicos aos pacientes.
+
+Exemplo simplificado:
+
+```python
+class GerenciadorPacientes:
+    def __init__(self):
+        self.pacientes = []
+
+    def adicionar_paciente(self, paciente):
+        self.pacientes.append(paciente)
+        self.ordenar_pacientes()
+
+    def ordenar_pacientes(self):
+        # Implementação do insertion sort baseado em prioridade e data
+        ...
+
+    def buscar_por_prioridade(self, prioridade):
+        # Busca binária para localizar pacientes com prioridade específica
+        ...
+
+    def atribuir_medico(self, id_paciente, id_medico):
+        # Atribui médico a paciente pelo ID
+        ...
+```
+
+Essa classe abstrai a lógica de manipulação dos pacientes, garantindo a integridade da lista e eficiência nas operações.
+
+---
+
+### Classe `GerenciadorMedicos`
+
+Semelhante ao gerenciador de pacientes, mantém e manipula a lista de médicos:
+
+* Cadastro e remoção de médicos.
+* Busca por ID ou especialidade.
+* Facilita a atribuição rápida em casos de emergência.
+
+Exemplo:
+
+```python
+class GerenciadorMedicos:
+    def __init__(self):
+        self.medicos = []
+
+    def adicionar_medico(self, medico):
+        self.medicos.append(medico)
+
+    def buscar_por_id(self, id_medico):
+        # Busca linear para localizar médico pelo ID
+        ...
 ```
 
 ---
@@ -88,18 +137,11 @@ O sistema utiliza uma versão adaptada do **Insertion Sort** para ordenar a list
 1. **Prioridade médica** — onde o nível 1 é o mais urgente.
 2. **Data de admissão** — em caso de empate na prioridade, quem chegou primeiro é atendido primeiro.
 
-**Por que usar Insertion Sort?**
-
-* É um algoritmo simples, fácil de implementar e entender.
-* Ideal para listas pequenas ou quase ordenadas.
-* Facilita a customização para múltiplos critérios, como neste caso.
-
 ```python
 def ordenar_pacientes(pacientes):
     for i in range(1, len(pacientes)):
         atual = pacientes[i]
         j = i - 1
-        # Ordena por prioridade e desempata por data de admissão
         while j >= 0 and (
             (pacientes[j].prioridade_medica > atual.prioridade_medica) or
             (pacientes[j].prioridade_medica == atual.prioridade_medica and pacientes[j].data_admissao > atual.data_admissao)
@@ -109,27 +151,9 @@ def ordenar_pacientes(pacientes):
         pacientes[j + 1] = atual
 ```
 
-**Exemplo prático:**
-
-Se temos três pacientes:
-
-| Nome  | Prioridade | Data de admissão |
-| ----- | ---------- | ---------------- |
-| João  | 2          | 10:00            |
-| Maria | 1          | 10:05            |
-| Pedro | 2          | 09:55            |
-
-A ordenação correta será:
-
-1. Maria (prioridade 1)
-2. Pedro (prioridade 2, chegou antes)
-3. João (prioridade 2, chegou depois)
-
----
-
 ### Algoritmo de Busca: Busca Binária
 
-Para acelerar a localização de pacientes em listas ordenadas, o sistema usa o algoritmo de **busca binária**. Ele permite encontrar rapidamente todos os pacientes que possuem uma prioridade médica específica, aproveitando o fato de a lista já estar ordenada por prioridade.
+Para acelerar a localização de pacientes em listas ordenadas, o sistema usa o algoritmo de **busca binária**.
 
 ```python
 def buscar_pacientes_binaria(pacientes, prioridade):
@@ -138,7 +162,6 @@ def buscar_pacientes_binaria(pacientes, prioridade):
     while esquerda <= direita:
         meio = (esquerda + direita) // 2
         if pacientes[meio].prioridade_medica == prioridade:
-            # Expande para ambos os lados para capturar todos os pacientes da mesma prioridade
             i = meio
             while i >= 0 and pacientes[i].prioridade_medica == prioridade:
                 resultado.insert(0, pacientes[i])
@@ -155,18 +178,13 @@ def buscar_pacientes_binaria(pacientes, prioridade):
     return resultado
 ```
 
-**Vantagens da busca binária:**
-
-* Reduz o número de comparações, operando em tempo O(log n) em listas ordenadas.
-* É muito mais eficiente do que a busca linear, especialmente em listas grandes.
-
 ---
 
 ## Aplicação Prática: Sistemas Hospitalares
 
-* **Ordenação**: permite organizar os pacientes por nome, data de admissão, prioridade médica ou ordem cronológica de chegada.
-* **Busca**: possibilita localizar rapidamente pacientes por nome, CPF, ID ou condição médica.
-* **Sinergia**: em triagens de emergência, a combinação de ordenação por gravidade e busca eficiente permite que o atendimento seja justo, rápido e baseado em critérios clínicos.
+* **Ordenação**: organiza pacientes para atendimento correto conforme urgência e tempo de espera.
+* **Busca**: encontra rapidamente pacientes com características específicas.
+* **Gerenciamento**: associa médicos a pacientes, facilitando o fluxo do atendimento.
 
 ---
 
