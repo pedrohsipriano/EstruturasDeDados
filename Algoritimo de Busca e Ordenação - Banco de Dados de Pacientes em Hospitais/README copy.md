@@ -1,6 +1,6 @@
 # Sistema de Gerenciamento de Pacientes
 
-## Contexto
+## Introdução
 
 Este projeto simula um sistema computacional para gerenciar pacientes em um ambiente hospitalar de emergência. O sistema realiza:
 
@@ -8,6 +8,16 @@ Este projeto simula um sistema computacional para gerenciar pacientes em um ambi
 * Ordenação automática da fila de atendimento com base na gravidade e no horário de chegada.
 * Atendimentos justos, guiados por critérios clínicos.
 * Buscas otimizadas por prioridade ou data de admissão utilizando **algoritmo de busca binária**.
+
+---
+
+### 🧠 Lógica de Atendimento Simulado
+
+O sistema simula o comportamento de um hospital de emergência, onde:
+
+- Pacientes graves são atendidos primeiro, respeitando níveis de prioridade médica.
+- Médicos são atribuídos dinamicamente aos pacientes conforme disponibilidade e necessidade.
+- A combinação de busca e ordenação otimizam o tempo de resposta, principalmente quando há muitos pacientes na fila, garantindo eficiência e justiça no atendimento.
 
 ---
 
