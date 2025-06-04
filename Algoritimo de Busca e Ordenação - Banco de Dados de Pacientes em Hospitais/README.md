@@ -11,7 +11,7 @@ Este projeto simula um sistema computacional para gerenciar pacientes em um ambi
 
 ---
 
-### 🧠 Lógica de Atendimento Simulado
+### Lógica de Atendimento Simulado
 
 O sistema simula o comportamento de um hospital de emergência, onde:
 
