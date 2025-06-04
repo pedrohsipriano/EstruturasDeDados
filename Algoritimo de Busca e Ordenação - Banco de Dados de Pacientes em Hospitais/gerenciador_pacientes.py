@@ -1,5 +1,7 @@
 import datetime
 
+# Ordena pacientes por prioridade médica (menor valor = maior prioridade)
+# Em caso de empate, usa a data de admissão (mais antiga primeiro)
 def ordenar_pacientes(lista_pacientes):
     for i in range(1, len(lista_pacientes)):
         paciente_atual = lista_pacientes[i]
@@ -13,13 +15,17 @@ def ordenar_pacientes(lista_pacientes):
             j -= 1
         lista_pacientes[j + 1] = paciente_atual
 
+
+# Seleciona o próximo paciente a ser atendido, aplicando regras de prioridade e balanceamento
 def selecionar_proximo(lista_aguardando, contadores_atendimento):
     if not lista_aguardando:
         return None
 
+    # Paciente de prioridade 1 é sempre atendido primeiro
     if lista_aguardando[0].prioridade_medica == 1:
         return lista_aguardando.pop(0)
 
+    # Localiza índices dos primeiros pacientes dos níveis 2, 3 e 4
     idx_proximo_nivel_2 = -1
     idx_proximo_nivel_3 = -1
     idx_proximo_nivel_4 = -1
@@ -32,50 +38,48 @@ def selecionar_proximo(lista_aguardando, contadores_atendimento):
         elif p.prioridade_medica == 4 and idx_proximo_nivel_4 == -1:
             idx_proximo_nivel_4 = i
 
+        # Para se já encontrou todos, interrompe o loop
         if idx_proximo_nivel_2 != -1 and idx_proximo_nivel_3 != -1 and idx_proximo_nivel_4 != -1:
             break
 
+    # Regra: a cada 2 atendimentos de nível 2, atende um de nível 3 ou 4
     if contadores_atendimento.get('atendidos_nivel2_desde_ultimo_nivel3_ou_4', 0) >= 2:
-        paciente_selecionado = None
         if idx_proximo_nivel_3 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_3)
             contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = 0
-            return paciente_selecionado
+            return lista_aguardando.pop(idx_proximo_nivel_3)
         elif idx_proximo_nivel_4 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_4)
             contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = 0
-            return paciente_selecionado
+            return lista_aguardando.pop(idx_proximo_nivel_4)
         elif idx_proximo_nivel_2 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_2)
             contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] += 1
-            return paciente_selecionado
+            return lista_aguardando.pop(idx_proximo_nivel_2)
     else:
         if idx_proximo_nivel_2 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_2)
             contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = \
                 contadores_atendimento.get('atendidos_nivel2_desde_ultimo_nivel3_ou_4', 0) + 1
-            return paciente_selecionado
+            return lista_aguardando.pop(idx_proximo_nivel_2)
         elif idx_proximo_nivel_3 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_3)
             contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = 0
-            return paciente_selecionado
+            return lista_aguardando.pop(idx_proximo_nivel_3)
         elif idx_proximo_nivel_4 != -1:
-            paciente_selecionado = lista_aguardando.pop(idx_proximo_nivel_4)
             contadores_atendimento['atendidos_nivel2_desde_ultimo_nivel3_ou_4'] = 0
-            return paciente_selecionado
+            return lista_aguardando.pop(idx_proximo_nivel_4)
 
+    # Se nenhum dos critérios for satisfeito, pega o primeiro da fila
     if lista_aguardando:
         return lista_aguardando.pop(0)
 
     return None
 
-def buscar_pacientes_binaria(lista_pacientes, prioridade_alvo, data_admissao_alvo=None):
 
+# Busca binária por pacientes com prioridade e, opcionalmente, data de admissão
+def buscar_pacientes_binaria(lista_pacientes, prioridade_alvo, data_admissao_alvo=None):
     resultados = []
     esquerda = 0
     direita = len(lista_pacientes) - 1
     primeiro_encontrado_idx = -1
 
+    # Executa busca binária
     while esquerda <= direita:
         meio = (esquerda + direita) // 2
         paciente_meio = lista_pacientes[meio]
@@ -97,9 +101,12 @@ def buscar_pacientes_binaria(lista_pacientes, prioridade_alvo, data_admissao_alv
                 primeiro_encontrado_idx = meio
                 direita = meio - 1
 
+    # Expande para encontrar todos os pacientes com a mesma prioridade (e data, se houver)
     if primeiro_encontrado_idx != -1:
         idx = primeiro_encontrado_idx
         temp_resultados_esquerda = []
+
+        # Busca à esquerda
         while idx >= 0 and \
               lista_pacientes[idx].prioridade_medica == prioridade_alvo and \
               (data_admissao_alvo is None or lista_pacientes[idx].data_admissao == data_admissao_alvo):
@@ -107,10 +114,12 @@ def buscar_pacientes_binaria(lista_pacientes, prioridade_alvo, data_admissao_alv
             idx -= 1
         resultados.extend(reversed(temp_resultados_esquerda))
 
+        # Busca à direita
         idx = primeiro_encontrado_idx + 1
         while idx < len(lista_pacientes) and \
               lista_pacientes[idx].prioridade_medica == prioridade_alvo and \
               (data_admissao_alvo is None or lista_pacientes[idx].data_admissao == data_admissao_alvo):
             resultados.append(lista_pacientes[idx])
             idx += 1
+
     return resultados
