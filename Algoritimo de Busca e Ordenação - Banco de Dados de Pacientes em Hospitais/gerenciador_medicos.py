@@ -1,4 +1,4 @@
-# Função para ordenar lista de médicos usando Insertion Sort
+# Função para ordenar lista de médicos usando Insertion SORT
 def ordenar_medicos(lista_medicos, criterio="nome"):
     n = len(lista_medicos)
     for i in range(1, n):
