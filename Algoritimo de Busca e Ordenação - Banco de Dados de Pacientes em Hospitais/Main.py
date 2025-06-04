@@ -5,11 +5,11 @@ import gerenciador_pacientes as gp
 import gerenciador_medicos as gm
 import os
 
-#Menu functions
+# Função para limpar a tela do terminal
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
+# Exibe o menu principal e retorna a opção escolhida
 def exibir_menu_principal():
     print("\nSistema de Gerenciamento Hospitalar ")
     print("==========================================")
@@ -20,7 +20,7 @@ def exibir_menu_principal():
     print("==========================================")
     return input("Escolha uma opção: ")
 
-
+# Exibe o submenu de gerenciamento de pacientes
 def exibir_menu_pacientes():
     print("\n--- Gerenciar Pacientes ---")
     print("1. Adicionar Novo Paciente à Fila")
@@ -31,7 +31,7 @@ def exibir_menu_pacientes():
     print("9. Voltar ao Menu Principal")
     return input("Escolha uma opção: ")
 
-
+# Exibe o submenu de gerenciamento de médicos
 def exibir_menu_medicos():
     print("\n--- Gerenciar Médicos ---")
     print("1. Adicionar Novo Médico")
@@ -45,11 +45,12 @@ def exibir_menu_medicos():
     print("9. Voltar ao Menu Principal")
     return input("Escolha uma opção: ")
 
-
+# Função para adicionar um novo paciente ao sistema
 def adicionar_novo_paciente(lista_pacientes):
     limpar_tela()
     print("--- Adicionar Novo Paciente ---")
     nome = input("Nome completo do paciente: ")
+    # Validação da prioridade médica
     while True:
         try:
             prioridade_str = input("Prioridade Médica (1-Emergência a 5-Não Urgente): ")
@@ -60,10 +61,11 @@ def adicionar_novo_paciente(lista_pacientes):
         except ValueError:
             print("Entrada inválida. Por favor, insira um número entre 1 e 5.")
 
-    # Function that adds a simple sequential ID
+    # Geração automática do ID do paciente
     id_paciente_novo = (max(p.id_paciente for p in lista_pacientes if isinstance(p.id_paciente, int)) + 1) \
         if any(isinstance(p.id_paciente, int) for p in lista_pacientes) else 101
 
+    # Cria e adiciona o novo paciente
     novo_paciente = Paciente(nome, prioridade, id_paciente=id_paciente_novo)
     lista_pacientes.append(novo_paciente)
     print(f"\nPaciente '{novo_paciente.nome_completo}' adicionado com ID {id_paciente_novo}.")
@@ -71,15 +73,16 @@ def adicionar_novo_paciente(lista_pacientes):
     input("\nPressione Enter para continuar...")
     return novo_paciente
 
-
+# Função para adicionar um novo médico ao sistema
 def adicionar_novo_medico(lista_medicos):
     limpar_tela()
     print("--- Adicionar Novo Médico ---")
     nome = input("Nome completo do médico: ")
     especialidade = input("Especialidade: ")
-    # ID simples para exemplo
+    # Geração automática do ID do médico
     id_medico_novo = f"MED-{(max(int(m.id_medico.split('-')[1]) for m in lista_medicos if m.id_medico.startswith('MED-') and m.id_medico.split('-')[1].isdigit()) + 1) if any(m.id_medico.startswith('MED-') for m in lista_medicos) else 101}"
 
+    # Cria e adiciona o novo médico
     novo_medico = Medico(nome, especialidade, id_medico=id_medico_novo)
     lista_medicos.append(novo_medico)
     print(f"\nMédico '{novo_medico.nome_completo}' adicionado com ID {id_medico_novo}.")
@@ -87,7 +90,7 @@ def adicionar_novo_medico(lista_medicos):
     input("\nPressione Enter para continuar...")
     return novo_medico
 
-
+# Função para listar entidades (pacientes ou médicos) de forma formatada
 def listar_entidades_formatado(lista_entidades, titulo="Lista de Entidades"):
     limpar_tela()
     print(f"--- {titulo} ---")
@@ -99,9 +102,9 @@ def listar_entidades_formatado(lista_entidades, titulo="Lista de Entidades"):
     print("-" * (len(titulo) + 6))
     input("\nPressione Enter para continuar...")
 
-
+# Função para carregar dados iniciais de exemplo
 def carregar_dados_iniciais():
-
+    # Cria lista inicial de pacientes
     pacientes = [
         Paciente("Carlos Silva", 2, 1, data_admissao=datetime.datetime(2023, 10, 20, 10, 0, 0)),
         Paciente("Ana Pereira", 1, 2, data_admissao=datetime.datetime(2023, 10, 20, 10, 5, 0)),
@@ -113,8 +116,9 @@ def carregar_dados_iniciais():
         Paciente("Fernanda Lima", 2, 8, data_admissao=datetime.datetime(2023, 10, 20, 10, 3, 0)),
         Paciente("Roberto Dias", 5, 9, data_admissao=datetime.datetime(2023, 10, 20, 11, 0, 0)),
         Paciente("Ana Silva", 1, 10, data_admissao=datetime.datetime(2023, 10, 20, 10, 4, 0))
-
     ]
+    
+    # Cria lista inicial de médicos
     medicos = [
         Medico("Dr. Gregory House", "Diagnóstico", "MED-001"),
         Medico("Dra. Meredith Grey", "Cirurgia Geral", "MED-002"),
@@ -123,6 +127,7 @@ def carregar_dados_iniciais():
         Medico("Dr. James Wilson", "Oncologia", "MED-005")
     ]
 
+    # Atribui médicos a alguns pacientes
     pacientes[0].atribuir_medico("MED-002")  # Carlos Silva com Dra. Meredith Grey
     pacientes[5].atribuir_medico("MED-001")  # Beatriz Almeida com Dr. Gregory House
     pacientes[9].atribuir_medico("MED-004")  # Ana Clara Silva com Dra. Cristina Yang
@@ -130,34 +135,42 @@ def carregar_dados_iniciais():
 
     return pacientes, medicos
 
-
-# Main Loop
+# Bloco principal de execução do programa
 if __name__ == "__main__":
+    # Carrega dados iniciais
     lista_de_pacientes, lista_de_medicos = carregar_dados_iniciais()
-
     pacientes_ordenados_para_busca_prioridade = False
+    
+    # Loop principal do sistema
     while True:
         limpar_tela()
         escolha_principal = exibir_menu_principal()
 
-        # --- MANAGE PATIENTS---
+        # Opção 1 - Gerenciamento de pacientes
         if escolha_principal == '1':
             while True:
                 limpar_tela()
                 escolha_pacientes = exibir_menu_pacientes()
+                
+                # Opção 1.1 - Adicionar novo paciente
                 if escolha_pacientes == '1':
                     adicionar_novo_paciente(lista_de_pacientes)
                     pacientes_ordenados_para_busca_prioridade = False
+                
+                # Opção 1.2 - Listar pacientes
                 elif escolha_pacientes == '2':
                     listar_entidades_formatado(lista_de_pacientes, "Lista de Todos os Pacientes (Ordem Atual)")
+                
+                # Opção 1.3 - Ordenar pacientes por prioridade
                 elif escolha_pacientes == '3':
                     gp.ordenar_pacientes(lista_de_pacientes)
                     pacientes_ordenados_para_busca_prioridade = True
                     listar_entidades_formatado(lista_de_pacientes, "Pacientes Ordenados por Prioridade e Admissão")
+                
+                # Opção 1.4 - Buscar pacientes por prioridade
                 elif escolha_pacientes == '4':
                     if not pacientes_ordenados_para_busca_prioridade:
-                        print(
-                            "\nAlerta: A lista de pacientes precisa ser ordenada por prioridade primeiro (Opção 3 do menu de pacientes).")
+                        print("\nAlerta: A lista de pacientes precisa ser ordenada por prioridade primeiro (Opção 3 do menu de pacientes).")
                         print("Ordenando agora para otimizar a busca...")
                         gp.ordenar_pacientes(lista_de_pacientes)
                         pacientes_ordenados_para_busca_prioridade = True
@@ -165,6 +178,7 @@ if __name__ == "__main__":
 
                     limpar_tela()
                     print("--- Buscar Pacientes por Prioridade ---")
+                    # Validação da prioridade de busca
                     while True:
                         try:
                             prioridade_busca_str = input("Digite a prioridade para busca (1-5): ")
@@ -174,15 +188,19 @@ if __name__ == "__main__":
                             break
                         except ValueError:
                             print("Entrada inválida para prioridade.")
+                    
+                    # Busca opcional por data de admissão
                     data_adm_busca_str = input(
                         "Digite a data de admissão (AAAA-MM-DD HH:MM) ou deixe em branco para buscar apenas por prioridade: ")
 
+                    # Executa a busca binária
                     resultados_busca_p = gp.buscar_pacientes_binaria(
                         lista_de_pacientes, prioridade_busca, data_adm_busca_str if data_adm_busca_str else None
                     )
                     listar_entidades_formatado(resultados_busca_p,
                                                f"Resultado da Busca (Prioridade: {prioridade_busca})")
 
+                # Opção 1.5 - Atribuir médico a paciente
                 elif escolha_pacientes == '5':
                     limpar_tela()
                     print("--- Atribuir Médico a Paciente ---")
@@ -209,29 +227,38 @@ if __name__ == "__main__":
                         print(f"\nPaciente com ID '{id_pac_str}' não encontrado.")
                     input("\nPressione Enter para continuar...")
 
+                # Voltar ao menu principal
                 elif escolha_pacientes == '9':
                     break
                 else:
                     print("Opção inválida. Tente novamente.")
                     input("Pressione Enter para continuar...")
 
-
-        # --- MANAGE DOCTORS---
-
+        # Opção 2 - Gerenciamento de médicos
         elif escolha_principal == '2':
             while True:
                 limpar_tela()
                 escolha_medicos = exibir_menu_medicos()
+                
+                # Opção 2.1 - Adicionar novo médico
                 if escolha_medicos == '1':
                     adicionar_novo_medico(lista_de_medicos)
+                
+                # Opção 2.2 - Listar médicos
                 elif escolha_medicos == '2':
                     listar_entidades_formatado(lista_de_medicos, "Lista de Todos os Médicos (Ordem Atual)")
+                
+                # Opção 2.3 - Ordenar médicos por nome
                 elif escolha_medicos == '3':
                     gm.ordenar_medicos(lista_de_medicos, "nome")
                     listar_entidades_formatado(lista_de_medicos, "Médicos Ordenados por Nome")
+                
+                # Opção 2.4 - Ordenar médicos por especialidade
                 elif escolha_medicos == '4':
                     gm.ordenar_medicos(lista_de_medicos, "especialidade")
                     listar_entidades_formatado(lista_de_medicos, "Médicos Ordenados por Especialidade (e Nome)")
+                
+                # Opção 2.5 - Buscar médico por ID
                 elif escolha_medicos == '5':
                     limpar_tela()
                     id_busca_m = input("Digite o ID do médico para busca (ex: MED-001): ")
@@ -241,17 +268,23 @@ if __name__ == "__main__":
                     else:
                         print(f"Médico com ID '{id_busca_m}' não encontrado.")
                         input("Pressione Enter para continuar...")
+                
+                # Opção 2.6 - Buscar médicos por nome parcial
                 elif escolha_medicos == '6':
                     limpar_tela()
                     nome_busca_m = input("Digite o nome parcial do médico para busca: ")
                     medicos_res_nome = gm.buscar_medicos_por_nome(lista_de_medicos, nome_busca_m)
                     listar_entidades_formatado(medicos_res_nome, f"Resultado da Busca por Nome: '{nome_busca_m}'")
+                
+                # Opção 2.7 - Buscar médicos por especialidade
                 elif escolha_medicos == '7':
                     limpar_tela()
                     esp_busca_m = input("Digite a especialidade do médico para busca: ")
                     medicos_res_esp = gm.buscar_medicos_por_especialidade(lista_de_medicos, esp_busca_m)
                     listar_entidades_formatado(medicos_res_esp,
                                                f"Resultado da Busca por Especialidade: '{esp_busca_m}'")
+                
+                # Opção 2.8 - Listar pacientes de um médico
                 elif escolha_medicos == '8':
                     limpar_tela()
                     id_med_para_pac = input("Digite o ID do médico para listar seus pacientes: ")
@@ -263,38 +296,43 @@ if __name__ == "__main__":
                     else:
                         print(f"Médico com ID '{id_med_para_pac}' não encontrado.")
                         input("Pressione Enter para continuar...")
+                
+                # Voltar ao menu principal
                 elif escolha_medicos == '9':
                     break
                 else:
                     print("Opção inválida. Tente novamente.")
                     input("Pressione Enter para continuar...")
 
-
-        # --- SERVICE SIMULATION ---
-
+        # Opção 3 - Simulação de atendimento de emergência
         elif escolha_principal == '3':
             limpar_tela()
             print("--- Iniciando Simulação de Atendimento de Emergência ---")
 
+            # Verifica se há pacientes cadastrados
             if not lista_de_pacientes:
                 print("Não há pacientes cadastrados para iniciar a simulação.")
                 input("\nPressione Enter para voltar ao menu principal...")
                 continue
 
+            # Ordena pacientes para simulação
             gp.ordenar_pacientes(lista_de_pacientes)
             pacientes_ordenados_para_busca_prioridade = True
 
+            # Cria cópia da lista para simulação
             lista_para_atendimento_simulacao = list(lista_de_pacientes)
 
             print("\nFila inicial para atendimento (ordenada):")
-            listar_entidades_formatado(lista_para_atendimento_simulacao, "Fila para Simulação")  # Mostra e pausa
+            listar_entidades_formatado(lista_para_atendimento_simulacao, "Fila para Simulação")
 
+            # Inicializa contadores e lista de atendidos
             contadores_fila = {'atendidos_nivel2_desde_ultimo_nivel3_ou_4': 0}
             pacientes_atendidos_na_simulacao = []
 
             print("\nIniciando simulação passo a passo...")
             input("Pressione Enter para o primeiro atendimento...")
 
+            # Loop de simulação
             while lista_para_atendimento_simulacao:
                 limpar_tela()
                 print("--- Simulação em Andamento ---")
@@ -303,23 +341,30 @@ if __name__ == "__main__":
                     print(f"  {i + 1}. {p_fila}")
                 print("-" * 30)
 
+                # Seleciona próximo paciente a ser atendido
                 proximo_a_atender = gp.selecionar_proximo(
                     lista_para_atendimento_simulacao, contadores_fila
                 )
 
                 if proximo_a_atender:
+                    # Adiciona à lista de atendidos
                     pacientes_atendidos_na_simulacao.append(proximo_a_atender)
+                    
+                    # Obtém nome do médico responsável
                     nome_medico_resp = "N/A"
                     if proximo_a_atender.id_medico_atribuido:
                         med_obj_sim = gm.buscar_medico_por_id(lista_de_medicos, proximo_a_atender.id_medico_atribuido)
                         if med_obj_sim:
                             nome_medico_resp = med_obj_sim.nome_completo
 
+                    # Exibe informações do atendimento
                     print(
                         f"\n--> ATENDENDO: {proximo_a_atender.nome_completo} (P: {proximo_a_atender.prioridade_medica}) "
                         f"\n    Médico Responsável: {nome_medico_resp} "
                         f"\n    (Contador Nível 2: {contadores_fila.get('atendidos_nivel2_desde_ultimo_nivel3_ou_4', 0)})"
                     )
+                    
+                    # Controla fluxo da simulação
                     if lista_para_atendimento_simulacao:
                         input("\nPressione Enter para o próximo atendimento...")
                     else:
@@ -329,12 +374,13 @@ if __name__ == "__main__":
                     print("\nFila de atendimento esvaziou (condição inesperada).")
                     break
 
+            # Exibe resumo final da simulação
             limpar_tela()
             print("--- Simulação Concluída ---")
             listar_entidades_formatado(pacientes_atendidos_na_simulacao, "Ordem Final de Atendimento na Simulação")
             input("Pressione Enter para voltar ao menu principal...")
 
-        # --- EXIT ---
+        # Opção 0 - Sair do sistema
         elif escolha_principal == '0':
             limpar_tela()
             print("Saindo do sistema.")
